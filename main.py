@@ -1,53 +1,50 @@
-# Function to perform addition
-def add():
-    a = input("Enter first value: ")
+# Function to take input
+def input_function():
+    a = input("Enter first value: ")    
     b = input("Enter second value: ")
 
     try:                                           # ValueError handling
         a_float = float(a)
         b_float = float(b)
-        return a_float +b_float
+        return a_float, b_float
     except ValueError:
         print("Please enter valid numbers for this operation")
+
+# Function to perform addition
+def add():
+    a, b = input_function()
+    return a+b
 
 # Function to perform subtraction
 def subtract():
-    a = input("Enter first value: ")
-    b = input("Enter second value: ")
-
-    try:                                           # ValueError handling
-        a_float = float(a)
-        b_float = float(b)
-        return a_float - b_float
-    except ValueError:
-        print("Please enter valid numbers for this operation")
+    a, b = input_function()
+    return a-b
 
 # Function to perform multiplication
 def multiply():
-    a = input("Enter first value: ")
-    b = input("Enter second value: ")
-
-    try:                                           # ValueError handling
-        a_float = float(a)
-        b_float = float(b)
-        return a_float * b_float
-    except ValueError:
-        print("Please enter valid numbers for this operation")
+    a, b = input_function()
+    return a*b
 
 # Function to perform division
 def divide():
-    a = input("Enter first value: ")
-    b = input("Enter second value: ")
+    a, b = input_function()
 
-    try:                                           # ValueError handling & ZeroDivisionError
-        a_float = float(a)
-        b_float = float(b)
-        return a_float / b_float
-    except ValueError:
-        print("Please enter valid numbers for this operation")
+    try:                                            #ZeroDivisionError Handling
+        return a/b
     except ZeroDivisionError:
         print("Cannot divide by zero!!!")
 
+# Function to perform modulus
+def mod():
+    a, b = input_function()
+
+    return a % b
+
+# Function perform percentage
+def percentage():
+    a, b = input_function()
+
+    return (a * b) / 100
 
 # Display menu and operation selection
 def select_operation():
@@ -58,9 +55,14 @@ def select_operation():
     print("2. Subtraction")
     print("3. Multiplication")
     print("4. Division")
-    print("Enter 1, 2 ,3 ,4 :")
+    print("5. Modulus")
+    print("Enter 1, 2 ,3 ,4, 5, 6: ")
 
-    usr_input = int(input())
+    try:
+        usr_input = int(input())
+    except ValueError:
+        print("Please enter a number between 1 and 6")
+        return None
 
     if usr_input == 1:
         return add()
@@ -70,6 +72,10 @@ def select_operation():
         return multiply()
     elif usr_input == 4:
         return  divide()
+    elif usr_input == 5:
+        return mod()
+    elif usr_input == 6:
+        return percentage()
     else:
         print("Please enter a within num 1 to 4")
 
@@ -78,8 +84,10 @@ while True:
     print("--- Welcome to basic Python Calculator ---")
     result = select_operation()
 
-    if result != None:                              #None result handling
-        print("Result: ", result)
+    if result != None:                          #None result handling
+        if result.is_integer():
+            result = int(result)                #Converting float to int if whole number              
+            print("Result: ", result)
     again = input("Do you want to continue? (y/n): ")
 
     if again.lower() == 'n':
