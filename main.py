@@ -1,21 +1,25 @@
+# Function to perform addition
 def add():
-    a = float(input("Enter first value: "))
+    a = float(input("Enter first value: ")) 
     b = float(input("Enter second value: "))
 
     return a+b
 
+# Function to perform substraction
 def subtract():
     a = float(input("Enter first value: "))
     b = float(input("Enter second value: "))
 
     return a-b
 
+# Function to perform multiplication
 def multiply():
     a = float(input("Enter first value: "))
     b = float(input("Enter second value: "))
 
     return a*b
 
+# Function to perform division
 def divide():
     a = float(input("Enter first value: "))
     b = float(input("Enter second value: "))
@@ -23,7 +27,7 @@ def divide():
     return a / b
 
 
-
+# Display menu and operation selection
 def select_operation():
 
     print("Select your operation")
@@ -47,6 +51,7 @@ def select_operation():
     else:
         print("Please enter a within num 1 to 4")
 
+# main prgram loop
 while True:
     print("--- Welcome to basic Python Calculator ---")
     result = select_operation()
