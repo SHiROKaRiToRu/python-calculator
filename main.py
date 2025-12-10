@@ -4,30 +4,41 @@ def input_function():
     b = input("Enter second value: ")
 
     try:                                           # ValueError handling
-        a_float = float(a)
-        b_float = float(b)
-        return a_float, b_float
+        return float(a), float(b)
     except ValueError:
         print("Please enter valid numbers for this operation")
+        return None
 
 # Function to perform addition
 def add():
-    a, b = input_function()
+    values = input_function()
+    if values is None:
+        return None
+    a, b = values
     return a+b
 
 # Function to perform subtraction
 def subtract():
-    a, b = input_function()
+    values = input_function()
+    if values is None:
+        return None
+    a, b = values
     return a-b
 
 # Function to perform multiplication
 def multiply():
-    a, b = input_function()
+    values = input_function()
+    if values is None:
+        return None
+    a, b = values
     return a*b
 
 # Function to perform division
 def divide():
-    a, b = input_function()
+    values = input_function()
+    if values is None:
+        return None
+    a, b = values
 
     try:                                            #ZeroDivisionError Handling
         return a/b
@@ -36,48 +47,62 @@ def divide():
 
 # Function to perform modulus
 def mod():
-    a, b = input_function()
+    values = input_function()
+    if values is None:
+        return None
+    a, b = values
 
     return a % b
 
-# Function perform percentage
+# Function to perform percentage
 def percentage():
-    a, b = input_function()
+    values = input_function()
+    if values is None:
+        return None
+    a, b = values
 
     return (a * b) / 100
+
+# Function to perform exponents
+def power():
+    values = input_function()
+    if values is None:
+        return None
+    a, b = values
+
+    return a ** b
 
 # Display menu and operation selection
 def select_operation():
 
+    choice_map = {
+            1: ("Addition", add),
+            2: ("Subtraction", subtract),
+            3: ("Multiplication", multiply),
+            4: ("Division", divide),
+            5: ("Modulus", mod),
+            6: ("Percentage", percentage),
+            7: ("Power", power)
+        }
+    for key, (name, _) in choice_map.items():
+        print(f"{key}.{name}")
     print("Select your operation")
 
-    print("1. Addition")
-    print("2. Subtraction")
-    print("3. Multiplication")
-    print("4. Division")
-    print("5. Modulus")
-    print("Enter 1, 2 ,3 ,4, 5, 6: ")
+    
+    print("Enter 1, 2 ,3 ,4, 5, 6, 7: ")
 
     try:
         usr_input = int(input())
+        if usr_input in choice_map:
+            operation_function = choice_map[usr_input][1]
+            return operation_function()
+        else:
+            print("Please enter a number between 1 and 6")
     except ValueError:
         print("Please enter a number between 1 and 6")
         return None
-
-    if usr_input == 1:
-        return add()
-    elif usr_input == 2:
-        return subtract()
-    elif usr_input == 3:
-        return multiply()
-    elif usr_input == 4:
-        return  divide()
-    elif usr_input == 5:
-        return mod()
-    elif usr_input == 6:
-        return percentage()
-    else:
-        print("Please enter a within num 1 to 4")
+        
+    
 
 # main prgram loop
 while True:
