@@ -1,30 +1,52 @@
 # Function to perform addition
 def add():
-    a = float(input("Enter first value: ")) 
-    b = float(input("Enter second value: "))
+    a = input("Enter first value: ")
+    b = input("Enter second value: ")
 
-    return a+b
+    try:                                           # ValueError handling
+        a_float = float(a)
+        b_float = float(b)
+        return a_float +b_float
+    except ValueError:
+        print("Please enter valid numbers for this operation")
 
-# Function to perform substraction
+# Function to perform subtraction
 def subtract():
-    a = float(input("Enter first value: "))
-    b = float(input("Enter second value: "))
+    a = input("Enter first value: ")
+    b = input("Enter second value: ")
 
-    return a-b
+    try:                                           # ValueError handling
+        a_float = float(a)
+        b_float = float(b)
+        return a_float - b_float
+    except ValueError:
+        print("Please enter valid numbers for this operation")
 
 # Function to perform multiplication
 def multiply():
-    a = float(input("Enter first value: "))
-    b = float(input("Enter second value: "))
+    a = input("Enter first value: ")
+    b = input("Enter second value: ")
 
-    return a*b
+    try:                                           # ValueError handling
+        a_float = float(a)
+        b_float = float(b)
+        return a_float * b_float
+    except ValueError:
+        print("Please enter valid numbers for this operation")
 
 # Function to perform division
 def divide():
-    a = float(input("Enter first value: "))
-    b = float(input("Enter second value: "))
+    a = input("Enter first value: ")
+    b = input("Enter second value: ")
 
-    return a / b
+    try:                                           # ValueError handling & ZeroDivisionError
+        a_float = float(a)
+        b_float = float(b)
+        return a_float / b_float
+    except ValueError:
+        print("Please enter valid numbers for this operation")
+    except ZeroDivisionError:
+        print("Cannot divide by zero!!!")
 
 
 # Display menu and operation selection
@@ -33,7 +55,7 @@ def select_operation():
     print("Select your operation")
 
     print("1. Addition")
-    print("2. Substraction")
+    print("2. Subtraction")
     print("3. Multiplication")
     print("4. Division")
     print("Enter 1, 2 ,3 ,4 :")
@@ -55,7 +77,9 @@ def select_operation():
 while True:
     print("--- Welcome to basic Python Calculator ---")
     result = select_operation()
-    print("Result: ", result)
+
+    if result != None:                              #None result handling
+        print("Result: ", result)
     again = input("Do you want to continue? (y/n): ")
 
     if again.lower() == 'n':
