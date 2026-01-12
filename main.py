@@ -1,125 +1,104 @@
-# Function to take input
-def input_function():
-    a = input("Enter first value: ")    
-    b = input("Enter second value: ")
+import tkinter as tk
 
-    try:                                           # ValueError handling
-        return float(a), float(b)
+window = tk.Tk()
+window.geometry("350x450")
+window.title("Python Calculator")
+
+# allow window to expand
+window.columnconfigure(0, weight=1)
+window.rowconfigure(1, weight=1)
+
+values = tk.Entry(window, font=("Arial", 16), justify="right")
+values.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
+
+
+buttonframe = tk.Frame(window)
+buttonframe.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+
+# make grid uniform and expandable
+for i in range(3):
+    buttonframe.grid_columnconfigure(i, weight=1, uniform="x")
+    buttonframe.grid_rowconfigure(i, weight=1)
+
+btn_font = ("Arial", 18)
+
+
+current_op = None
+first_value = None
+
+def get_number():
+    try:
+        return float(values.get())
     except ValueError:
-        print("Please enter valid numbers for this operation")
+        values.delete(0, tk.END)
+        values.insert(0, "Error")
         return None
 
-# Function to perform addition
-def add():
-    values = input_function()
-    if values is None:
-        return None
-    a, b = values
-    return a+b
+def clear_entry():
+    values.delete(0, tk.END)
 
-# Function to perform subtraction
-def subtract():
-    values = input_function()
-    if values is None:
-        return None
-    a, b = values
-    return a-b
+def set_operation(op):
+    global first_value, current_op
+    first_value = get_number()
+    if first_value is None:
+        return
+    current_op = op
+    clear_entry()
 
-# Function to perform multiplication
-def multiply():
-    values = input_function()
-    if values is None:
-        return None
-    a, b = values
-    return a*b
-
-# Function to perform division
-def divide():
-    values = input_function()
-    if values is None:
-        return None
-    a, b = values
-
-    try:                                            #ZeroDivisionError Handling
-        return a/b
-    except ZeroDivisionError:
-        print("Cannot divide by zero!!!")
-
-# Function to perform modulus
-def mod():
-    values = input_function()
-    if values is None:
-        return None
-    a, b = values
-
-    return a % b
-
-# Function to perform percentage
-def percentage():
-    values = input_function()
-    if values is None:
-        return None
-    a, b = values
-
-    return (a * b) / 100
-
-# Function to perform exponents
-def power():
-    values = input_function()
-    if values is None:
-        return None
-    a, b = values
-
-    return a ** b
-
-# Display menu and operation selection
-def select_operation():
-
-    choice_map = {
-            1: ("Addition", add),
-            2: ("Subtraction", subtract),
-            3: ("Multiplication", multiply),
-            4: ("Division", divide),
-            5: ("Modulus", mod),
-            6: ("Percentage", percentage),
-            7: ("Power", power)
-        }
-    for key, (name, _) in choice_map.items():
-        print(f"{key}.{name}")
-    print("Select your operation")
-
-    
-    print("Enter 1, 2 ,3 ,4, 5, 6, 7: ")
+def calculate():
+    global first_value, current_op
+    second_value = get_number()
+    if second_value is None or current_op is None:
+        return
 
     try:
-        usr_input = int(input())
-        if usr_input in choice_map:
-            operation_function = choice_map[usr_input][1]
-            return operation_function()
-        else:
-            print("Please enter a number between 1 and 6")
-    except ValueError:
-        print("Please enter a number between 1 and 6")
-        return None
-        
-    
+        if current_op == "+":
+            result = first_value + second_value
+        elif current_op == "-":
+            result = first_value - second_value
+        elif current_op == "*":
+            result = first_value * second_value
+        elif current_op == "/":
+            result = first_value / second_value
+        elif current_op == "%":          # percentage
+            result = (first_value * second_value) / 100
+        elif current_op == "^":
+            result = first_value ** second_value
+        elif current_op == "mod":       # modulus
+            result = first_value % second_value
 
-# main prgram loop
-while True:
-    print("--- Welcome to basic Python Calculator ---")
-    result = select_operation()
+        clear_entry()
+        values.insert(0, int(result) if result.is_integer() else result)
 
-    if result != None:                          #None result handling
-        if result.is_integer():
-            result = int(result)                #Converting float to int if whole number              
-            print("Result: ", result)
-    again = input("Do you want to continue? (y/n): ")
+    except ZeroDivisionError:
+        clear_entry()
+        values.insert(0, "Error")
 
-    if again.lower() == 'n':
-        print("Goodbye!")
-        break
+    first_value = None
+    current_op = None
 
 
 
+# row 0
+tk.Button(buttonframe, text="+", font=btn_font,
+          command=lambda: set_operation("+")).grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
+tk.Button(buttonframe, text="-", font=btn_font,
+          command=lambda: set_operation("-")).grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
+tk.Button(buttonframe, text="*", font=btn_font,
+          command=lambda: set_operation("*")).grid(row=0, column=2, sticky="nsew", padx=5, pady=5)
 
-    
+# row 1
+tk.Button(buttonframe, text="/", font=btn_font,
+          command=lambda: set_operation("/")).grid(row=1, column=0, sticky="nsew", padx=5, pady=5)
+tk.Button(buttonframe, text="%", font=btn_font,
+          command=lambda: set_operation("%")).grid(row=1, column=1, sticky="nsew", padx=5, pady=5)
+tk.Button(buttonframe, text="^", font=btn_font,
+          command=lambda: set_operation("^")).grid(row=1, column=2, sticky="nsew", padx=5, pady=5)
+
+# row 2
+tk.Button(buttonframe, text="mod", font=btn_font,
+          command=lambda: set_operation("mod")).grid(row=2, column=0, sticky="nsew", padx=5, pady=5)
+tk.Button(buttonframe, text="=", font=btn_font,
+          command=calculate).grid(row=2, column=1, columnspan=2, sticky="nsew", padx=5, pady=5)
+
+window.mainloop()
